@@ -93,6 +93,9 @@
     <Compile Include="GroundWithBase.cs" />
     <Compile Include="CenteredText.cs" />
     <Compile Include="TurningText.cs" />
+    <Compile Include="Tile.cs" />
+    <Compile Include="ColoredTile.cs" />
+    <Compile Include="TexturedTile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
