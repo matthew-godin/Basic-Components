@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace XNAProject
 {
-    class TexturedSphereAutomate : TexturedSphere
+    public class TexturedSphereAutomate : TexturedSphere
     {
         TrackData TrackData { get; set; }
         GroundWithBase Ground { get; set; }

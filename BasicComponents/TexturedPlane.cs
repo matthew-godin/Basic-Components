@@ -15,7 +15,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAProject
 {
-    class TexturedPlane : Plane
+    public class TexturedPlane : Plane
     {
         const int NO_VERTEX_OFFSET = 0, BEFORE_FIRST_VERTEX = -1;
 

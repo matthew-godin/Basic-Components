@@ -16,7 +16,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace XNAProject
 {
-    class Flag : TexturedPlane
+    public class Flag : TexturedPlane
     {
         const int NO_TIME_ELAPSED = 0;
 
