@@ -107,6 +107,7 @@ namespace XNAProject
         /// <param name="stripIndex">Triangle stripe index to display</param>
         protected override void DrawTriangleStrip(int stripIndex)
         {
+            GraphicsDevice.SamplerStates[0] = SamplerState.LinearClamp;
             GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleStrip, Vertices, stripIndex * NumVertices / NumRows, NumTrianglesPerStrip);
         }
     }
