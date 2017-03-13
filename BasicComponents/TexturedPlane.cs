@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAProject
 {
-   class TexturedPlane : Plane
+   public class TexturedPlane : Plane
    {
         //Initially managed by the constructor
         readonly string TextureName;

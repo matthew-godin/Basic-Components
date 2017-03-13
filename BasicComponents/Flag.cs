@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAProject
 {
-    class Flag : TexturedPlane
+    public class Flag : TexturedPlane
     {
         //Initially managed by the constructor
         readonly float MaxVariation;
