@@ -30,10 +30,7 @@ namespace XNAProject
          OldKeys = NewKeys;
          KeyboardState = Keyboard.GetState();
          NewKeys = KeyboardState.GetPressedKeys();
-         if (IsMouseActive)
-         {
-            UpdateMouseState();
-         }
+         UpdateMouseState();
       }
 
       public bool IsKeyboardActivated
@@ -63,11 +60,6 @@ namespace XNAProject
       {
          OldMouseState = NewMouseState;
          NewMouseState = Mouse.GetState();
-      }
-
-      public bool IsMouseActive
-      {
-         get { return Game.IsMouseVisible; }
       }
 
       public bool IsOldRightClick()
