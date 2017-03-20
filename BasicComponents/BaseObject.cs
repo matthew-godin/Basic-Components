@@ -10,7 +10,7 @@ namespace XNAProject
    {
       string ModelName { get; set; }
       ResourcesManager<Model> ModelMgr { get; set; }
-      Camera GameCamera { get; set; }
+      protected Camera GameCamera { get; set; }
       protected float Scale { get; set; }
       protected Vector3 Rotation { get; set; }
       protected Vector3 Position { get; set; }
@@ -19,7 +19,7 @@ namespace XNAProject
       protected Matrix[] TransformationsModel { get; private set; }
       protected Matrix World { get; set; }
 
-      public BaseObject(Game game, String modelName, float initialScale, Vector3 initialRotation, Vector3 initialPosition)
+      public BaseObject(Game game, string modelName, float initialScale, Vector3 initialRotation, Vector3 initialPosition)
          : base(game)
       {
          ModelName = modelName;
