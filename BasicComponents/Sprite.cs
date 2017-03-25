@@ -28,7 +28,9 @@ namespace AtelierXNA
 
       public override void Draw(GameTime gameTime)
       {
+            SpriteMgr.Begin();
          SpriteMgr.Draw(Image, Position, Color.White);
+            SpriteMgr.End();
       }
    }
 }
