@@ -9,7 +9,7 @@ namespace XNAProject
    {
       const int NUM_TRIANGLES = 2;
       ResourceManager<Texture2D> TextureMgr;
-      Texture2D textureTile;
+      protected Texture2D Texture { get; set; }  //Texture2D textureTile;
       GreenxPositionTexture[] Vertices { get; set; }
       protected Vector2[,] TexturePts { get; set; }
       string TextureNameTile { get; set; }
@@ -53,14 +53,14 @@ namespace XNAProject
       {
 
          TextureMgr = Game.Services.GetService(typeof(ResourceManager<Texture2D>)) as ResourceManager<Texture2D>;
-         textureTile = TextureMgr.Find(TextureNameTile);
+         /*textureTile*/Texture = TextureMgr.Find(TextureNameTile);
          base.LoadContent();
       }
 
       protected override void InitializeBscEffectParameters()
       {
          BscEffect.TextureEnabled = true;
-         BscEffect.Texture = textureTile;
+         BscEffect.Texture = /*textureTile*/Texture;
          AlphaMgr = BlendState.AlphaBlend; // Attention à ceci...
       }
 
