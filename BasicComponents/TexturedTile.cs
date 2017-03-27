@@ -11,12 +11,12 @@ namespace XNAProject
       ResourceManager<Texture2D> TextureMgr;
       Texture2D textureTile;
       GreenxPositionTexture[] Vertices { get; set; }
-      Vector2[,] TexturePts { get; set; }
+      protected Vector2[,] TexturePts { get; set; }
       string TextureNameTile { get; set; }
       BlendState AlphaMgr { get; set; }
 
-      public TexturedTile(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, Vector2 span, string textureNameTile, float updateInterval)
-         : base(game, initialScale, initialRotation, initialPosition, span, updateInterval)
+      public TexturedTile(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, Vector2 span, string textureNameTile/*, float updateInterval*/)
+         : base(game, initialScale, initialRotation, initialPosition, span/*, updateInterval*/)
       {
          TextureNameTile = textureNameTile;
       }
