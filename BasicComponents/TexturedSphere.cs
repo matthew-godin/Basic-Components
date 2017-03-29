@@ -1,143 +1,147 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using Microsoft.Xna.Framework;
 
 namespace XNAProject
 {
-    public class TexturedSphere : AnimatedBasicPrimitive, ICollidable
-    {
-        Texture2D Texture { get; set; }
-        ResourceManager<Texture2D> TextureMgr { get; set; }
-        BasicEffect BscEffect { get; set; }
-        Vector2 Dimensions { get; set; }
-        float Radius { get; set; }
-        string TextureName { get; set; }
-        float Delta { get; set; }
-        Vector3 Origin { get; set; }
-        bool Colision { get; set; }
+   class TexturedSphere : AnimatedBasicPrimitive //Plane
+   {
+      //Initially managed by the constructor
+      readonly float Radius;
+      readonly int NumColumns;
+      readonly int NumLines;
+      readonly string TextureName;
 
-        Vector3[,] VertexPts { get; set; }
-        Vector2[,] TexturePts { get; set; }
-        VertexPositionTexture[] Vertices { get; set; }
-        List<Vector3> pointList { get; set; }
+      readonly Vector3 Origin;
 
-        public TexturedSphere(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, float radius, Vector2 dimensions, string textureName, float updateInterval) 
-            : base(game, initialScale, initialRotation, initialPosition, updateInterval)
-        {
-            Dimensions = dimensions;
-            Radius = radius;
-            TextureName = textureName;
-            NumTriangles = (int)(Dimensions.X * Dimensions.Y * 2);
-            Origin = new Vector3(-(float)(Math.PI * Radius), -Radius, (float)(Math.PI * Radius));
-        }
-        public BoundingSphere CollisionSphere
-        {
-            get
+      //Initially managed by functions called by base.Initialize()
+      Vector3[,] VertexPts { get; set; }
+      Vector2[,] TexturePts { get; set; }
+      VertexPositionTexture[] Vertices { get; set; }
+      BasicEffect BscEffect { get; set; }
+      //BlendState AlphaMgr { get; set; }
+
+      int NumTrianglesPerStrip { get; set; }
+
+      //Initially managed by LoadContent()
+      ResourceManager<Texture2D> TextureMgr { get; set; }
+      Texture2D SphereTexture { get; set; }
+
+      public TexturedSphere(Game game, float initialScale, Vector3 initialRotation,
+                            Vector3 initialPosition, float radius, Vector2 dimensions,
+                            string textureName, float updateInterval)
+          : base(game, initialScale, initialRotation, initialPosition, updateInterval)
+      {
+         Radius = radius;
+         NumColumns = (int)dimensions.X;
+         NumLines = (int)dimensions.Y;
+         TextureName = textureName;
+
+         Origin = new Vector3(0, 0, 0);
+      }
+
+      public override void Initialize()
+      {
+         NumTrianglesPerStrip = NumColumns * 2;
+         NumVertices = (NumTrianglesPerStrip + 2) * NumLines;
+
+         AllocateArrays();
+         base.Initialize();
+         InitializeBscEffectParameters();
+      }
+
+      void AllocateArrays()
+      {
+         VertexPts = new Vector3[NumColumns + 1, NumLines + 1];
+         TexturePts = new Vector2[NumColumns + 1, NumLines + 1];
+         Vertices = new VertexPositionTexture[NumVertices];
+      }
+
+      void InitializeBscEffectParameters()
+      {
+         BscEffect = new BasicEffect(GraphicsDevice);
+         BscEffect.TextureEnabled = true;
+         BscEffect.Texture = SphereTexture;
+      }
+
+      protected override void InitializeVertices()
+      {
+         PopulateVertexPts();
+         PopulateTexturePts();
+         PopulateVertices();
+      }
+
+      void PopulateVertexPts()
+      {
+         float angle = (float)(2 * Math.PI) / NumColumns;
+         float phi = 0;
+         float theta = 0;
+
+         for (int j = 0; j < VertexPts.GetLength(0); ++j)
+         {
+            for (int i = 0; i < VertexPts.GetLength(1); ++i)
             {
-                return new BoundingSphere(Position, Radius);
+               VertexPts[i, j] = new Vector3(Origin.X + Radius * (float)(Math.Sin(phi) * Math.Cos(theta)),
+                                              Origin.Z + Radius * (float)(Math.Cos(phi)),
+                                              Origin.Y + Radius * (float)(Math.Sin(phi) * Math.Sin(theta)));
+               theta += angle;
             }
-        }
+            phi += (float)Math.PI / NumLines;
+         }
+      }
 
-        public override void Initialize()
-        {
-            Delta = (Radius * 2) / Dimensions.X;
-            VertexPts = new Vector3[(int)(Dimensions.Y + 1),(int)(Dimensions.X + 1)]; //row,column
-            TexturePts = new Vector2[(int)(Dimensions.Y + 1), (int)(Dimensions.X + 1)];
-            Vertices = new VertexPositionTexture[NumTriangles * 3];
-            CreateTexturePointArray();
-            CreatePointArray();
-            base.Initialize();
-        }
-
-        protected override void LoadContent()
-        {
-            TextureMgr = Game.Services.GetService(typeof(ResourceManager<Texture2D>)) as ResourceManager<Texture2D>;
-            Texture = TextureMgr.Find(TextureName);
-            BscEffect = new BasicEffect(GraphicsDevice);
-            BscEffect.TextureEnabled = true;
-            BscEffect.Texture = Texture;
-            base.LoadContent();
-        }
-
-        private void CreateTexturePointArray()
-        {
-            for (int row = 0; row < Dimensions.Y + 1; ++row)
+      void PopulateTexturePts()
+      {
+         for (int i = 0; i < TexturePts.GetLength(0); ++i)
+         {
+            for (int j = 0; j < TexturePts.GetLength(1); ++j)
             {
-                for (int column = 0; column < Dimensions.X + 1; ++column)
-                {
-                    TexturePts[row, column] = new Vector2((1f/Dimensions.X) * column, 1 - (1f/Dimensions.Y) * row);
-                }
+               TexturePts[i, j] = new Vector2(i / (float)NumColumns, -j / (float)NumLines);
             }
-        }
+         }
+      }
 
-        private void CreatePointArray()
-        {
-            List<float> listHeight = new List<float>();
-            for(int i = 0; i <= Dimensions.X / 2;++i)
+      void PopulateVertices()
+      {
+         int vertexIndex = -1;
+         for (int j = 0; j < NumLines; ++j)
+         {
+            for (int i = 0; i < NumColumns + 1; ++i)
             {
-                listHeight.Add((2 * i) / Dimensions.X);
+               Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[i, j], TexturePts[i, j]);
+               Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[i, j + 1], TexturePts[i, j + 1]);
             }
-            float DeltaHeight = -10; //for the 2
-            for (int row = 0; row < Dimensions.Y + 1; ++row)
-            {
-                float Phi = 0; //for the 1
-                DeltaHeight += 90f / (Dimensions.X / 2); //must change every row change
-                for (int column = 0; column < Dimensions.X + 1; ++column)
-                {
-                    if (row <= 10)
-                        VertexPts[row, column] = new Vector3((float)Math.Sin(MathHelper.ToRadians(Phi)) * (float)Math.Sin(MathHelper.ToRadians(DeltaHeight)), //1 : turns the plane, 2 : reduces the x from 0 to 90 to 0
-                                                               (-Radius + Radius*listHeight[row]*listHeight[row]),                                                                   //1 : reduces the y from 0 to 90 to 0
-                                                               (float)Math.Cos(MathHelper.ToRadians(Phi)) * (float)Math.Sin(MathHelper.ToRadians(DeltaHeight))); //1 : turns the plane, 2 : reduces the z from 0 to 90 to 0
-                    else
-                    {
-                        VertexPts[row, column] = new Vector3((float)Math.Sin(MathHelper.ToRadians(Phi)) * (float)Math.Sin(MathHelper.ToRadians(DeltaHeight)), //1 : turns the plane, 2 : reduces the x from 0 to 90 to 0
-                                                              (Radius - Radius * listHeight[20 - row] * listHeight[20 - row]),                                                                   //1 : reduces the y from 0 to 90 to 0
-                                                              (float)Math.Cos(MathHelper.ToRadians(Phi)) * (float)Math.Sin(MathHelper.ToRadians(DeltaHeight))); //1 : turns the plane, 2 : reduces the z from 0 to 90 to 0
-                    }
-                    Phi += 360f / Dimensions.X; //must always change
-                }
-            }
-            pointList = new List<Vector3>();
-            foreach (Vector3 v in VertexPts)
-            {
-                pointList.Add(v);
-            }
-        }
+         }
+      }
 
-        protected override void InitializeVertices()
-        {
-            int vertexIndex = -1;
-            for (int ligne = 0; ligne < Dimensions.Y; ++ligne)
-            {
-                for (int column = 0; column < Dimensions.X; ++column)
-                {
-                    Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[ligne, column], TexturePts[ligne, column]);
-                    Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[ligne + 1, column], TexturePts[ligne + 1, column]);
-                    Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[ligne + 1, column + 1], TexturePts[ligne + 1, column + 1]);
-                    Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[ligne, column], TexturePts[ligne, column]);
-                    Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[ligne + 1, column + 1], TexturePts[ligne+1, column +1]);
-                    Vertices[++vertexIndex] = new VertexPositionTexture(VertexPts[ligne, column + 1], TexturePts[ligne, column + 1]);
-                }
-            }
-        }
+      protected override void LoadContent()
+      {
+         TextureMgr = Game.Services.GetService(typeof(ResourceManager<Texture2D>)) as ResourceManager<Texture2D>;
+         SphereTexture = TextureMgr.Find(TextureName);
+         base.LoadContent();
+      }
 
-        public override void Draw(GameTime gameTime)
-        {
-            BscEffect.World = GetWorld();
-            BscEffect.View = GameCamera.View;
-            BscEffect.Projection = GameCamera.Projection;
-            foreach (EffectPass passEffect in BscEffect.CurrentTechnique.Passes)
+      public override void Draw(GameTime gameTime)
+      {
+         BscEffect.World = GetWorld();
+         BscEffect.View = GameCamera.View;
+         BscEffect.Projection = GameCamera.Projection;
+         foreach (EffectPass passEffect in BscEffect.CurrentTechnique.Passes)
+         {
+            passEffect.Apply();
+            for (int i = 0; i < NumLines; ++i)
             {
-                passEffect.Apply();
-                GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleList, Vertices, 0, NumTriangles);
+               DrawTriangleStrip(i);
             }
-        }
+         }
+      }
 
-        public bool IsColliding(object otherObject)
-        {
-            return CollisionSphere.Intersects((otherObject as TexturedCube).CollisionSphere);
-        }
-    }
+      void DrawTriangleStrip(int stripIndex)
+      {
+         int vertexOffset = (stripIndex * NumVertices) / NumLines;
+         GraphicsDevice.DrawUserPrimitives<VertexPositionTexture>(PrimitiveType.TriangleStrip, Vertices, vertexOffset, NumTrianglesPerStrip);
+      }
+
+   }
 }
