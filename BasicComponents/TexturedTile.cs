@@ -15,8 +15,8 @@ namespace XNAProject
       string TextureNameTile { get; set; }
       BlendState AlphaMgr { get; set; }
 
-      public TexturedTile(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, Vector2 span, string textureNameTile/*, float updateInterval*/)
-         : base(game, initialScale, initialRotation, initialPosition, span/*, updateInterval*/)
+      public TexturedTile(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, Vector2 span, string textureNameTile, float updateInterval)
+         : base(game, initialScale, initialRotation, initialPosition, span, updateInterval)
       {
          TextureNameTile = textureNameTile;
       }
