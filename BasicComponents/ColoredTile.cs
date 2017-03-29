@@ -12,8 +12,8 @@ namespace XNAProject
       Color Color { get; set; }
 
       public ColoredTile(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, 
-                          Vector2 span, Color color/*, float updateInterval*/)
-         : base(game, initialScale, initialRotation, initialPosition, span/*, updateInterval*/)
+                          Vector2 span, Color color, float updateInterval)
+         : base(game, initialScale, initialRotation, initialPosition, span, updateInterval)
       {
          Color = color;
       }

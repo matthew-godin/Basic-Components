@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAProject
 {
-   public abstract class Tile : BasicPrimitive//AnimatedBasicPrimitive
+   public abstract class Tile : AnimatedBasicPrimitive
    {
       const int NUM_TRIANGLES = 2;
       protected Vector3[,] VertexPts { get; private set; }
@@ -15,8 +15,8 @@ namespace XNAProject
 
 
       public Tile(Game game, float initialScale, Vector3 initialRotation, Vector3 initialPosition, 
-                   Vector2 span/*, float updateInterval*/)
-         : base(game, initialScale, initialRotation, initialPosition/*, updateInterval*/)
+                   Vector2 span, float updateInterval)
+         : base(game, initialScale, initialRotation, initialPosition, updateInterval)
       {
          Delta = new Vector2(span.X, span.Y);
          Origin = new Vector3(-Delta.X / 2, -Delta.Y / 2, 0); //to center the primitive to point (0,0,0)
