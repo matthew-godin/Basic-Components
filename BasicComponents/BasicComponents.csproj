@@ -86,7 +86,6 @@
     <Compile Include="BasicResource.cs" />
     <Compile Include="ResourceManager.cs" />
     <Compile Include="TexturedSphere.cs" />
-    <Compile Include="TexturedSphereAutomate.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="MovingSprite.cs" />
     <Compile Include="AnimatedMovingSprite.cs" />

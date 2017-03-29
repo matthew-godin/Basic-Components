@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace XNAProject
 {
-   class TexturedSphere : AnimatedBasicPrimitive //Plane
+   public class TexturedSphere : AnimatedBasicPrimitive //Plane
    {
       //Initially managed by the constructor
       readonly float Radius;
