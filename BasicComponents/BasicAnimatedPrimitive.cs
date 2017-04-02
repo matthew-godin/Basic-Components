@@ -118,27 +118,27 @@ namespace XNAProject
 
       protected virtual void ManageKeyboard()
       {
-         if (InputMgr.IsPressed(Keys.LeftControl) || InputMgr.IsPressed(Keys.RightControl))
-         {
-            if (InputMgr.IsNewKey(Keys.Space))
-            {
-               InitializeRotations();
-               WorldToRecompute = true;
-            }
-            if (InputMgr.IsNewKey(Keys.D1) || InputMgr.IsNewKey(Keys.NumPad1))
-            {
-               Yaw = !Yaw;
-            }
-            if (InputMgr.IsNewKey(Keys.D2) || InputMgr.IsNewKey(Keys.NumPad2))
-            {
-               Pitch = !Pitch;
-            }
-            if (InputMgr.IsNewKey(Keys.D3) || InputMgr.IsNewKey(Keys.NumPad3))
-            {
-               Roll = !Roll;
-            }
-         }
-         WorldToRecompute = WorldToRecompute || Yaw || Pitch || Roll;
+         //if (InputMgr.IsPressed(Keys.LeftControl) || InputMgr.IsPressed(Keys.RightControl))
+         //{
+         //   if (InputMgr.IsNewKey(Keys.Space))
+         //   {
+         //      InitializeRotations();
+         //      WorldToRecompute = true;
+         //   }
+         //   if (InputMgr.IsNewKey(Keys.D1) || InputMgr.IsNewKey(Keys.NumPad1))
+         //   {
+         //      Yaw = !Yaw;
+         //   }
+         //   if (InputMgr.IsNewKey(Keys.D2) || InputMgr.IsNewKey(Keys.NumPad2))
+         //   {
+         //      Pitch = !Pitch;
+         //   }
+         //   if (InputMgr.IsNewKey(Keys.D3) || InputMgr.IsNewKey(Keys.NumPad3))
+         //   {
+         //      Roll = !Roll;
+         //   }
+         //}
+         //WorldToRecompute = WorldToRecompute || Yaw || Pitch || Roll;
       }
    }
 }
