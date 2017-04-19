@@ -33,7 +33,7 @@ namespace XNAProject
 
       public void Load()
       {
-         if (Resource == null)
+          if (Resource == null)
          {
             string fullName = Location + "/" + Name;
             Resource = Content.Load<T>(fullName);
