@@ -7,7 +7,7 @@ namespace XNAProject
    public abstract class BasicAnimatedPrimitive : BasicPrimitive
    {
       protected float Scale { get; set; }
-      protected Vector3 Position { get; set; }
+      public Vector3 Position { get; protected set; }
       float UpdateInterval { get; set; }
       float TimeElpasedSinceUpdate { get; set; }
       protected InputManager InputMgr { get; private set; }
