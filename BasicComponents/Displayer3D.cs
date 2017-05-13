@@ -47,11 +47,11 @@ namespace XNAProject
          base.LoadContent();
       }
 
-      public override void Update(GameTime gameTime)
-      {
-         ManageKeyboard();
-         base.Update(gameTime);
-      }
+      //public override void Update(GameTime gameTime)
+      //{
+      //   ManageKeyboard();
+      //   base.Update(gameTime);
+      //}
 
       public override void Draw(GameTime gameTime)
       {
@@ -62,12 +62,12 @@ namespace XNAProject
          base.Draw(gameTime);
       }
 
-      void ManageKeyboard()
-      {
-         if (InputMgr.IsNewKey(Keys.F))
-         {
-            IsDisplayedInWireframes = !IsDisplayedInWireframes;
-         }
-      }
+      //void ManageKeyboard()
+      //{
+      //   if (InputMgr.IsNewKey(Keys.F))
+      //   {
+      //      IsDisplayedInWireframes = !IsDisplayedInWireframes;
+      //   }
+      //}
    }
 }
